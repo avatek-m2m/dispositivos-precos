@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }
 
-            // --- GERA O HTML PARA OS PLANOS DE LOCAÇÃO (COM A NOVA LÓGICA DE AGRUPAMENTO) ---
+            // --- GERA O HTML PARA OS PLANOS DE LOCAÇÃO (COM AGRUPAMENTO DE PLANOS DE DADOS) ---
             let locacaoHTML = '';
             if (locacaoPlans.length > 0) {
                 // Agrupa os planos por duração (ex: "12 Meses", "24 Meses")
@@ -94,11 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }
 
-            // Monta o HTML final do card com todas as seções
+            // Monta o HTML final do card, agora incluindo o ESTOQUE
             card.innerHTML = `
                 <div class="card-header">
                     <h3>${equip.NomeProduto}</h3>
                     <p>${equip.Fabricante} - Modelo: ${equip.Modelo}</p>
+                    <p class="stock">Estoque: <strong>${equip.Estoque !== undefined && equip.Estoque !== '' ? equip.Estoque : 'N/D'}</strong></p>
                 </div>
                 <div class="card-body">
                     ${vendaHTML}
