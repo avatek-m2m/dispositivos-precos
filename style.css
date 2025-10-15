@@ -128,3 +128,19 @@ header h1 {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+/* Adicione ao final de style.css */
+.plan-group {
+    margin-top: 10px;
+    border-top: 1px solid #f5f5f5;
+    padding-top: 10px;
+}
+.group-name {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 15px;
+    color: #333;
+}
+.data-plan {
+    padding-left: 15px; /* Indenta os planos de dados */
+    font-size: 14px;
+}
