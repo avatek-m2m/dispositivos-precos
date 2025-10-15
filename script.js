@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // COLE AQUI A URL DO SEU APP DA WEB OBTIDA NO GOOGLE APPS SCRIPT
     // A URL deve estar entre as aspas simples.
     //
-    const API_URL = 'https://script.google.com/macros/s/AKfycbyP6MC6FUYLWLC5eTP4l-VxwTYodJITlLn95YLoLGTb7iPTBRZTyQLtAGWOmmJxukCg/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwhmUuiBpEbX414UKaQOvC0r8OF72F2YUVdCDG-IiTI-tqRgNrM9i3e6zEQmv2l-1Bb/exec';
     //
     // =================================================================================
 
