@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Cole aqui a MESMA URL da API que você usa no site principal
-    const API_URL = 'https://script.google.com/macros/s/AKfycbyjqt0R_aSvwOtTOQX8SZcqBLIaco6gQQsDihtph2cYT3U0ySbAEMQkqwDt8DkuCTio/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbySWbWsnWKQuNAP4_FX0329gyuUZWEBIpH38C8pVvqn_CPqev5_3-BnPjP_ycLpdHeN/exec';
 
     const apiKeyInput = document.getElementById('apiKey');
     const container = document.getElementById('admin-container');
