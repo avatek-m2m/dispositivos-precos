@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         ${Object.keys(groupedLocacao).map(groupName => `
                             <div class="plan-group">
                                 <strong class="group-name">${groupName}</strong>
-                                ${groupedLocacao[groupName].sort((a, b) => a.PlanoDados.localeCompare(b.PlanoDados)).map(p => `
+                                ${groupedLocacao[groupName].sort((a, b) => (a.PlanoDados || '').localeCompare(b.PlanoDados || '')).map(p => `
                                     <div class="plan">
                                         <span class="plan-name data-plan">${p.PlanoDados || ''}</span>
                                         <span class="plan-price">${formatCurrency(p.ValorParcela)} / mês</span>
