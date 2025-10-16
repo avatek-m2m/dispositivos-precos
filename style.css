@@ -156,3 +156,72 @@ header h1 {
 #modalImage { max-width: 80vw; max-height: 80vh; display: block; }
 .modal-close { position: absolute; top: -15px; right: -10px; color: var(--primary-text-color); background-color: #333; border-radius: 50%; width: 35px; height: 35px; font-size: 28px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; line-height: 1; }
 .modal-close:hover, .modal-close:focus { color: #bbb; }
+
+
+/* ==================================== */
+/* ESTILOS DO MODAL DE ESPECIFICAÇÕES */
+/* ==================================== */
+
+/* Ajuste no seletor do modal para aplicar a ambos */
+.modal-content {
+    position: relative;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90%;
+    max-height: 90%;
+    background-color: var(--card-color);
+    border: 1px solid var(--border-color);
+}
+
+/* Estilos específicos para o modal de especificações (texto) */
+.spec-content {
+    max-width: 600px; /* Um pouco mais largo para texto */
+    text-align: left;
+    line-height: 1.6;
+}
+
+#modalSpecTitle {
+    margin-top: 0;
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+#modalSpecs {
+    color: var(--primary-text-color);
+}
+
+/* Formatação básica para o conteúdo vindo do Markdown */
+#modalSpecs ul {
+    padding-left: 20px;
+    margin: 0;
+}
+#modalSpecs li {
+    margin-bottom: 8px;
+}
+
+/* Estilo para o novo botão "Ver Especificações" */
+.view-spec-btn {
+    background-color: transparent;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-top: 15px;
+    margin-left: 8px; /* Espaço entre os botões */
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.view-spec-btn:hover {
+    background-color: var(--accent-color);
+    color: var(--card-color);
+}
+
+/* Container para alinhar os botões */
+.button-container {
+    display: flex;
+    align-items: center;
+}
