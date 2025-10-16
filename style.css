@@ -225,3 +225,14 @@ header h1 {
     display: flex;
     align-items: center;
 }
+
+/* ==================================== */
+/* CORREÇÃO PARA SCROLL NO MODAL DE ESPECIFICAÇÕES */
+/* ==================================== */
+
+#modalSpecs {
+    max-height: 65vh; /* Define uma altura máxima (65% da altura da tela) */
+    overflow-y: auto; /* Adiciona uma barra de rolagem vertical AUTOMATICAMENTE quando o texto é muito longo */
+    padding-right: 15px; /* Adiciona um espaço à direita para a barra de rolagem não ficar colada no texto */
+    color: var(--primary-text-color);
+}
