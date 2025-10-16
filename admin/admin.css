@@ -78,17 +78,46 @@ main {
 .update-section table { width: 100%; border-collapse: collapse; }
 .update-section th, .update-section td { text-align: left; padding: 0.8em; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
 .update-section input[type="number"] { width: 100px; padding: 0.5em; background-color: var(--bg-color); color: var(--primary-text-color); border: 1px solid var(--border-color); border-radius: 4px; }
-.update-section button { padding: 0.5em 1em; background: var(--success-color); color: white; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; }
-.update-section button:hover { background: var(--success-hover-color); }
+
 .last-updated { font-size: 0.8em; color: var(--secondary-text-color); font-style: italic; font-weight: normal; }
+
+.card-footer {
+    padding: 1em 1.5em;
+    background-color: #2a2a2a;
+    border-top: 1px solid var(--border-color);
+    text-align: right;
+    border-radius: 0 0 8px 8px;
+}
+
+.save-all-btn {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 10px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.save-all-btn:hover {
+    transform: scale(1.05);
+}
+
+.save-all-btn:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+    transform: none;
+}
 
 .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 1em 2em; border-radius: 25px; z-index: 2000; opacity: 0; transition: opacity 0.5s; }
 .toast.show { opacity: 1; }
 
 /* Estilos do botão de Recarregar */
-#reloadDataBtn { background-color: var(--accent-color); color: var(--bg-color); border: none; padding: 10px 20px; border-radius: 8px; font-weight: 500; cursor: pointer; transition: transform 0.2s; display: inline-flex; align-items: center; justify-content: center; }
+#reloadDataBtn { background-color: var(--success-color); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 500; cursor: pointer; transition: transform 0.2s; display: inline-flex; align-items: center; justify-content: center; }
 #reloadDataBtn:hover { transform: scale(1.05); }
-#reloadDataBtn .btn-spinner { display: none; width: 16px; height: 16px; border: 2px solid var(--bg-color); border-top-color: transparent; border-radius: 50%; margin-left: 8px; animation: spin 0.8s linear infinite; }
+#reloadDataBtn .btn-spinner { display: none; width: 16px; height: 16px; border: 2px solid white; border-top-color: transparent; border-radius: 50%; margin-left: 8px; animation: spin 0.8s linear infinite; }
 #reloadDataBtn.reloading .btn-text { display: none; }
 #reloadDataBtn.reloading .btn-spinner { display: block; margin-left: 0; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
