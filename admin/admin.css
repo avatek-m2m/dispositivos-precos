@@ -121,3 +121,24 @@ main {
 #reloadDataBtn.reloading .btn-text { display: none; }
 #reloadDataBtn.reloading .btn-spinner { display: block; margin-left: 0; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* ==================================== */
+/* ESTILOS PARA LOGO DO FABRICANTE      */
+/* ==================================== */
+
+.manufacturer-info {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espaço entre o logo e o texto */
+    color: var(--secondary-text-color);
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.supplier-logo {
+    height: 16px; /* Altura padrão para os logos */
+    width: auto;
+    border-radius: 3px;
+    background-color: #fff; /* Fundo branco para logos transparentes */
+    padding: 2px;
+}
