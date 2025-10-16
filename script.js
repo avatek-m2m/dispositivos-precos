@@ -7,8 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //
     // =====================================================================================
 
-    // --- CÓDIGO FALTANTE ADICIONADO AQUI ---
-    // Mapeia o nome do fabricante (exatamente como está na planilha) para a URL do logo.
+    // --- Mapa de Logos ---
     const supplierLogos = {
         'TELTONIKA': 'https://logo.clearbit.com/teltonika-gps.com',
         'SUNTECH': 'https://logo.clearbit.com/suntechdobrasil.com.br',
@@ -22,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Referências aos elementos da página ---
     const container = document.getElementById('equipment-container');
     const searchInput = document.getElementById('searchInput');
-    const reloadDataBtn = document.getElementById('reloadDataBtn');
+    const reloadDataBtn = document.getElementById('reloadDataBtn'); // Botão de Recarregar
     let allEquipments = [];
 
     // --- Referências aos MODAIS ---
@@ -36,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeSpecBtn = document.querySelector('#specModal .modal-close');
     const specModalOverlay = document.querySelector('#specModal .modal-overlay');
 
-    // --- Funções dos MODAIS (código existente) ---
+    // --- Funções dos MODAIS ---
     const openImageModal = (imageUrl) => { modalImage.src = imageUrl; imageModal.style.display = 'flex'; };
     const closeImageModal = () => { imageModal.style.display = 'none'; modalImage.src = ''; };
     const openSpecModal = async (fileName, equipName) => {
@@ -57,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const closeSpecModal = () => { specModal.style.display = 'none'; };
 
-    // --- Eventos para fechar os MODAIS (código existente) ---
+    // --- Eventos para fechar os MODAIS ---
     closeImageBtn.onclick = closeImageModal; imageModalOverlay.onclick = closeImageModal;
     closeSpecBtn.onclick = closeSpecModal; specModalOverlay.onclick = closeSpecModal;
     window.addEventListener('keydown', (event) => { if (event.key === 'Escape') { closeImageModal(); closeSpecModal(); } });
@@ -82,12 +81,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     
+    // --- FUNÇÃO fetchData TOTALMENTE ATUALIZADA ---
     const fetchData = async () => {
+        // Mostra o loader principal e ativa a animação do botão
         container.innerHTML = `<div class="loader"><div class="spinner"></div><p>Carregando equipamentos...</p></div>`;
         reloadDataBtn.classList.add('reloading');
         reloadDataBtn.disabled = true;
 
         try {
+            // Adiciona um timestamp na URL para burlar o cache do navegador
             const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
             if (!response.ok) throw new Error(`Falha na resposta: ${response.statusText}`);
             const data = await response.json();
@@ -97,12 +99,13 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Erro ao buscar dados:', error);
             container.innerHTML = '<p class="error-message">Falha ao carregar. Verifique a URL da API e as permissões.</p>';
         } finally {
-            reloadDataBtn.classList.remove('reloading');
-            reloadDataBtn.disabled = false;
+            // Este bloco SEMPRE será executado, com sucesso ou erro.
+            reloadDataBtn.classList.remove('reloading'); // Remove a animação
+            reloadDataBtn.disabled = false; // Habilita o botão novamente
         }
     };
     
-    // --- LÓGICA DOS EVENTOS ---
+    // --- Lógica dos Eventos ---
     container.addEventListener('click', (event) => {
         if (event.target.classList.contains('view-image-btn')) { openImageModal(event.target.dataset.imgSrc); }
         if (event.target.classList.contains('view-spec-btn')) { openSpecModal(event.target.dataset.specsFile, event.target.dataset.name); }
@@ -111,5 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     reloadDataBtn.addEventListener('click', fetchData);
 
+    // Inicia a primeira busca de dados
     fetchData();
 });
