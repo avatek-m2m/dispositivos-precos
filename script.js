@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //
     // ============================= CONFIGURAÇÕES IMPORTANTES =============================
     //
-    const API_URL = 'https://script.google.com/macros/s/AKfycbySWbWsnWKQuNAP4_FX0329gyuUZWEBIpH38C8pVvqn_CPqev5_3-BnPjP_ycLpdHeN/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyg5zVjh4YIb-vvpDNv7-nYosu1OGgV-zjIBSfROjdGG928zDP53aQPKfBPPwE_76dO/exec';
     const GITHUB_SPECS_URL_BASE = 'https://raw.githubusercontent.com/avatek-m2m/dispositivos-precos/main/especificacoes/';
     //
     // =====================================================================================
