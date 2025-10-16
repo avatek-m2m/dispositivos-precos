@@ -159,3 +159,84 @@ header h1 {
 .stock strong {
     color: #007bff; /* Azul para destacar o número */
 }
+
+/* ======================== */
+/* ESTILOS DO MODAL DE IMAGEM */
+/* ======================== */
+
+.modal {
+    display: none; /* Começa escondido */
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.7); /* Fundo preto semi-transparente */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+#modalImage {
+    max-width: 80vw; /* Largura máxima de 80% da tela */
+    max-height: 80vh; /* Altura máxima de 80% da tela */
+    display: block;
+}
+
+.modal-close {
+    position: absolute;
+    top: -15px;
+    right: -10px;
+    color: #fff;
+    background-color: #333;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+    color: #bbb;
+    text-decoration: none;
+}
+
+/* Estilo para o novo botão "Ver Imagem" */
+.view-image-btn {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+
+.view-image-btn:hover {
+    background-color: #5a6268;
+}
