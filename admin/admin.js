@@ -2,14 +2,22 @@ document.addEventListener('DOMContentLoaded', () => {
     //
     // ============================= CONFIGURAÇÕES IMPORTANTES =============================
     //
-    // Cole aqui a MESMA URL da API que você usa no site principal
     const API_URL = 'https://script.google.com/macros/s/AKfycbxdLedZAMb-zN64kivWw4zHChHtCFZYu19Jw3NrCAjc98PaIFL_Rayuv8Q7VIrw5FNz/exec';
-    
-    // IMPORTANTE: Cole sua chave de API secreta aqui.
-    // Como esta página não será pública, podemos colocar a chave diretamente no código.
     const API_KEY = 'avatek@123';
     //
     // =====================================================================================
+
+    // --- NOVO MAPA DE LOGOS ---
+    // Mapeia o nome do fabricante (exatamente como está na planilha) para a URL do logo.
+    const supplierLogos = {
+        'TELTONIKA': 'https://logo.clearbit.com/teltonika-gps.com',
+        'SUNTECH': 'https://logo.clearbit.com/suntechdobrasil.com.br',
+        'RUPTELA': 'https://logo.clearbit.com/ruptela.com',
+        'TOPFLY': 'https://logo.clearbit.com/topflytech.com',
+        'QUECLINK': 'https://logo.clearbit.com/queclink.com',
+        'CONCOX': 'https://logo.clearbit.com/iconcox.com',
+        'JIMI IoT': 'https://logo.clearbit.com/jimilab.com'
+    };
 
     const container = document.getElementById('admin-container');
     const searchInput = document.getElementById('searchInput');
@@ -35,17 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
         }
         payload.apiKey = API_KEY;
-
         try {
-            // Nota: Apps Script com `no-cors` não retorna um corpo de resposta legível,
-            // então não podemos usar await response.json() diretamente.
-            // O redirecionamento interno que o Google faz é o que nos permite ler a resposta final.
-            await fetch(API_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify(payload)
-            });
-            // Assumimos sucesso se a requisição não der erro.
+            await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
             showToast("Atualização enviada com sucesso!");
             return true;
         } catch (error) {
@@ -66,6 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'equipment-admin-card';
             card.id = `card-${equip.ID_Equipamento}`;
+
+            // --- LÓGICA ATUALIZADA PARA OS LOGOS ---
+            const logoUrl = supplierLogos[equip.Fabricante];
+            const logoHTML = logoUrl ? `<img src="${logoUrl}" alt="Logo ${equip.Fabricante}" class="supplier-logo">` : '';
 
             const internalDataHTML = `
                 <div class="update-section">
@@ -92,8 +95,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     </table>
                 </div>`;
             
+            // --- card.innerHTML ATUALIZADO ---
             card.innerHTML = `
-                <div class="card-header"><h3>${equip.NomeProduto}</h3></div>
+                <div class="card-header">
+                    <h3>${equip.NomeProduto}</h3>
+                    <div class="manufacturer-info">
+                        ${logoHTML}
+                        <span>${equip.Fabricante} - Modelo: ${equip.Modelo}</span>
+                    </div>
+                </div>
                 <div class="card-body">
                     ${internalDataHTML}
                     ${plansHTML}
@@ -109,7 +119,6 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = "<p>Carregando...</p>";
         reloadDataBtn.classList.add('reloading');
         reloadDataBtn.disabled = true;
-
         try {
             const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
             allEquipmentsData = await response.json();
@@ -133,13 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const button = e.target;
             button.textContent = 'Salvando...';
             button.disabled = true;
-
             const equipId = button.dataset.id;
             const card = document.getElementById(`card-${equipId}`);
-
             const valorCompra = card.querySelectorAll('input[type="number"]')[0].value;
             const estoque = card.querySelectorAll('input[type="number"]')[1].value;
-
             const planos = [];
             card.querySelectorAll('table tr[data-plan-id]').forEach(row => {
                 const planId = row.dataset.planId;
@@ -147,22 +153,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const valorTotal = row.querySelectorAll('input[type="number"]')[1].value;
                 planos.push({ id: planId, valorParcela, valorTotal });
             });
-
-            const payload = {
-                action: 'update_product_all',
-                id: equipId,
-                valorCompra,
-                estoque,
-                planos
-            };
-
+            const payload = { action: 'update_product_all', id: equipId, valorCompra, estoque, planos };
             const success = await sendUpdateRequest(payload);
-            
             if (success) {
-                // Adiciona uma pequena pausa para a planilha processar antes de recarregar
-                setTimeout(() => {
-                    fetchAndRenderData();
-                }, 1500); // 1.5 segundos de espera
+                setTimeout(() => { fetchAndRenderData(); }, 1500);
             } else {
                 button.textContent = 'Salvar Alterações';
                 button.disabled = false;
