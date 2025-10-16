@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Painel de Administração</title>
     <link rel="stylesheet" href="admin.css">
+    <link rel="icon" type="image/x-icon" href="https://github.com/vmacagnani/api-pre-os/raw/main/favicon.ico">
 </head>
 <body>
     <header>
@@ -11,12 +12,16 @@
     </header>
     <main>
         <div class="config-section">
-            <h2>Configuração</h2>
-            <input type="password" id="apiKey" placeholder="Sua Chave de API Secreta">
             <input type="text" id="searchInput" placeholder="Filtrar equipamentos...">
+            <div class="header-actions">
+                <button id="reloadDataBtn" title="Recarregar dados da planilha">
+                    <span class="btn-text">Recarregar</span>
+                    <span class="btn-spinner"></span>
+                </button>
+            </div>
         </div>
         <div id="admin-container">
-            <p>Insira sua chave de API para carregar os dados.</p>
+            <p>Carregando dados...</p>
         </div>
     </main>
     <script src="admin.js"></script>
