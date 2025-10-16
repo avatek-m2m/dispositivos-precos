@@ -1,18 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
+    //
+    // ============================= CONFIGURAÇÕES IMPORTANTES =============================
+    //
     // Cole aqui a MESMA URL da API que você usa no site principal
-    const API_URL = 'https://script.google.com/macros/s/AKfycbySWbWsnWKQuNAP4_FX0329gyuUZWEBIpH38C8pVvqn_CPqev5_3-BnPjP_ycLpdHeN/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyg5zVjh4YIb-vvpDNv7-nYosu1OGgV-zjIBSfROjdGG928zDP53aQPKfBPPwE_76dO/exec';
+    
+    // IMPORTANTE: Cole sua chave de API secreta aqui.
+    // Como esta página não será pública, podemos colocar a chave diretamente no código.
+    const API_KEY = 'avatek@123';
+    //
+    // =====================================================================================
 
-    const apiKeyInput = document.getElementById('apiKey');
     const container = document.getElementById('admin-container');
     const searchInput = document.getElementById('searchInput');
+    const reloadDataBtn = document.getElementById('reloadDataBtn');
     let allEquipmentsData = [];
-
-    // Salva a chave de API no navegador para não precisar digitar sempre
-    apiKeyInput.value = localStorage.getItem('tabelaPrecosApiKey') || '';
-    apiKeyInput.addEventListener('change', () => {
-        localStorage.setItem('tabelaPrecosApiKey', apiKeyInput.value);
-        fetchAndRenderData();
-    });
 
     const showToast = (message) => {
         const toast = document.createElement('div');
@@ -27,27 +29,32 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const sendUpdateRequest = async (payload) => {
-        const apiKey = apiKeyInput.value;
-        if (!apiKey) {
-            showToast("Erro: Chave de API é necessária.");
+        if (!API_KEY || API_KEY === 'SUA_CHAVE_DE_API_SECRETA_AQUI') {
+            showToast("Erro: Chave de API não configurada no arquivo admin.js.");
             return;
         }
-        payload.apiKey = apiKey;
+        payload.apiKey = API_KEY;
 
         try {
-            const response = await fetch(API_URL, {
+            await fetch(API_URL, {
                 method: 'POST',
                 mode: 'no-cors', // Importante para Apps Script POST
-                cache: 'no-cache',
-                redirect: 'follow',
                 body: JSON.stringify(payload)
             });
-            // A resposta de no-cors é opaca, então confiamos que funcionou e damos feedback
             showToast("Atualização enviada! A planilha pode levar um momento para refletir.");
         } catch (error) {
             console.error('Erro no update:', error);
             showToast("Erro ao enviar atualização.");
         }
+    };
+    
+    // Nova função para formatar a data de forma amigável
+    const formatDate = (dateString) => {
+        if (!dateString) return 'Nunca alterado';
+        return new Date(dateString).toLocaleString('pt-BR', {
+            dateStyle: 'short',
+            timeStyle: 'short'
+        });
     };
 
     const renderAdminUI = (data) => {
@@ -58,10 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const internalDataHTML = `
                 <div class="update-section">
-                    <h4>Dados Internos</h4>
+                    <h4>Dados Internos <span class="last-updated">(Última alteração: ${formatDate(equip.DataAlteracao)})</span></h4>
                     <table>
                       <tr>
-                        <td>Valor Compra: <input type="number" id="valorCompra-${equip.ID_Equipamento}" value="${equip['Valor Compra']}"></td>
+                        <td>Valor Compra: <input type="number" step="0.01" id="valorCompra-${equip.ID_Equipamento}" value="${equip['Valor Compra']}"></td>
                         <td>Estoque: <input type="number" id="estoque-${equip.ID_Equipamento}" value="${equip.Estoque}"></td>
                         <td><button data-id="${equip.ID_Equipamento}" class="update-internals">Salvar</button></td>
                       </tr>
@@ -74,15 +81,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     <table>
                         ${equip.planos.map(p => `
                             <tr>
-                                <td>${p.Tipo} - ${p.NomePlano} ${p.PlanoDados || ''}</td>
-                                <td>Parcela: <input type="number" id="valorParcela-${p.ID_Plano}" value="${p.ValorParcela}"></td>
-                                <td>Total: <input type="number" id="valorTotal-${p.ID_Plano}" value="${p.ValorTotal}"></td>
+                                <td>${p.Tipo} - ${p.NomePlano} ${p.PlanoDados || ''}<br><span class="last-updated">(${formatDate(p.DataAlteracao)})</span></td>
+                                <td>Parcela: <input type="number" step="0.01" id="valorParcela-${p.ID_Plano}" value="${p.ValorParcela}"></td>
+                                <td>Total: <input type="number" step="0.01" id="valorTotal-${p.ID_Plano}" value="${p.ValorTotal}"></td>
                                 <td><button data-id="${p.ID_Plano}" class="update-plan">Salvar</button></td>
                             </tr>
                         `).join('')}
                     </table>
                 </div>`;
-
+            
             card.innerHTML = `
                 <div class="card-header"><h3>${equip.NomeProduto}</h3></div>
                 <div class="card-body">
@@ -94,14 +101,20 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const fetchAndRenderData = async () => {
-        if (!apiKeyInput.value) return;
         container.innerHTML = "<p>Carregando...</p>";
+        reloadDataBtn.classList.add('reloading');
+        reloadDataBtn.disabled = true;
+
         try {
-            const response = await fetch(API_URL);
+            // Adicionamos um timestamp na URL para burlar o cache do navegador
+            const response = await fetch(`${API_URL}?t=${new Date().getTime()}`);
             allEquipmentsData = await response.json();
             renderAdminUI(allEquipmentsData);
         } catch (error) {
             container.innerHTML = "<p>Erro ao carregar dados. Verifique a URL da API e se ela está implantada.</p>";
+        } finally {
+            reloadDataBtn.classList.remove('reloading');
+            reloadDataBtn.disabled = false;
         }
     };
 
@@ -111,7 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderAdminUI(filtered);
     });
 
-    // Event listener para os botões de salvar
     container.addEventListener('click', (e) => {
         if (e.target.classList.contains('update-internals')) {
             const id = e.target.dataset.id;
@@ -127,7 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    if (apiKeyInput.value) {
-        fetchAndRenderData();
-    }
+    reloadDataBtn.addEventListener('click', fetchAndRenderData);
+
+    // Carrega os dados assim que a página abre
+    fetchAndRenderData();
 });
