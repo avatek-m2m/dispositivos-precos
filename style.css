@@ -236,3 +236,65 @@ header h1 {
     padding-right: 15px; /* Adiciona um espaço à direita para a barra de rolagem não ficar colada no texto */
     color: var(--primary-text-color);
 }
+
+/* ==================================== */
+/* ESTILOS PARA BOTÃO DE RECARREGAR E LOGOS */
+/* ==================================== */
+
+/* Container para o botão no header */
+.header-actions {
+    margin-top: 15px;
+}
+
+#reloadDataBtn {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#reloadDataBtn:hover {
+    transform: scale(1.05);
+}
+
+#reloadDataBtn .btn-spinner {
+    display: none; /* Escondido por padrão */
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--bg-color);
+    border-top-color: transparent;
+    border-radius: 50%;
+    margin-left: 8px;
+    animation: spin 0.8s linear infinite;
+}
+
+#reloadDataBtn.reloading .btn-text {
+    display: none;
+}
+
+#reloadDataBtn.reloading .btn-spinner {
+    display: block;
+    margin-left: 0; /* Centraliza o spinner */
+}
+
+
+/* Container para o logo e nome do fabricante */
+.manufacturer-info {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espaço entre o logo e o texto */
+}
+
+/* Estilo para o logo */
+.supplier-logo {
+    height: 16px; /* Altura padrão para os logos */
+    width: auto;
+    border-radius: 3px;
+}
