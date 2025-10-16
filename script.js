@@ -2,41 +2,49 @@ document.addEventListener('DOMContentLoaded', () => {
     //
     // ============================= PASSO MAIS IMPORTANTE =============================
     //
-    // COLE AQUI A URL DO SEU APP DA WEB OBTIDA NO GOOGLE APPS SCRIPT
-    // A URL deve estar entre as aspas simples.
-    //
     const API_URL = 'https://script.google.com/macros/s/AKfycbySWbWsnWKQuNAP4_FX0329gyuUZWEBIpH38C8pVvqn_CPqev5_3-BnPjP_ycLpdHeN/exec';
     //
     // =================================================================================
 
+    // --- Referências aos elementos da página ---
     const container = document.getElementById('equipment-container');
     const searchInput = document.getElementById('searchInput');
-    let allEquipments = []; // Array para guardar os dados originais para não perder na busca
+    let allEquipments = [];
 
-    /**
-     * Formata um número como moeda brasileira (BRL).
-     * @param {number} value - O valor numérico a ser formatado.
-     * @returns {string} O valor formatado como moeda (ex: R$ 1.234,56).
-     */
-    const formatCurrency = (value) => {
-        // Se o valor não for um número, retorna um traço para evitar erros.
-        if (isNaN(value) || value === null) {
-            return 'R$ --';
-        }
-        return new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-        }).format(value);
+    // --- Referências aos elementos do MODAL ---
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const closeBtn = document.querySelector('.modal-close');
+    const modalOverlay = document.querySelector('.modal-overlay');
+
+    // --- Funções do MODAL ---
+    const openModal = (imageUrl) => {
+        modalImage.src = imageUrl;
+        modal.style.display = 'flex';
     };
 
-    /**
-     * Renderiza a lista de equipamentos na tela, criando um card para cada um.
-     * @param {Array<Object>} equipments - A lista de equipamentos a ser exibida.
-     */
-    const renderEquipments = (equipments) => {
-        container.innerHTML = ''; // Limpa o conteúdo atual do container
+    const closeModal = () => {
+        modal.style.display = 'none';
+        modalImage.src = ''; // Limpa a imagem para não carregar em segundo plano
+    };
 
-        // Se a lista de equipamentos estiver vazia, exibe uma mensagem.
+    // --- Eventos para fechar o MODAL ---
+    closeBtn.onclick = closeModal;
+    modalOverlay.onclick = closeModal;
+    window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeModal();
+        }
+    });
+
+    // --- Lógica principal da página ---
+    const formatCurrency = (value) => {
+        if (isNaN(value) || value === null) return 'R$ --';
+        return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+    };
+
+    const renderEquipments = (equipments) => {
+        container.innerHTML = '';
         if (equipments.length === 0) {
             container.innerHTML = '<p class="not-found">Nenhum equipamento encontrado.</p>';
             return;
@@ -46,60 +54,34 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'equipment-card';
 
-            // Separa os planos por tipo para renderizá-los em seções diferentes
+            // Gera o botão "Ver Imagem" apenas se a URL da imagem existir
+            const imageButtonHTML = equip.URL_Imagem ?
+                `<button class="view-image-btn" data-img-src="${equip.URL_Imagem}">Ver Imagem</button>` :
+                '';
+
             const vendaPlans = equip.planos.filter(p => p.Tipo === 'Venda');
             const locacaoPlans = equip.planos.filter(p => p.Tipo === 'Locação');
-
-            // --- GERA O HTML PARA OS PLANOS DE VENDA ---
             let vendaHTML = '';
-            if (vendaPlans.length > 0) {
-                vendaHTML = `
-                    <div class="plans-section">
-                        <h4>Planos de Venda</h4>
-                        ${vendaPlans.map(p => `
-                            <div class="plan">
-                                <span class="plan-name">${p.NomePlano}</span>
-                                <span class="plan-price">${p.NumeroParcelas > 1 ? `${p.NumeroParcelas}x de ` : ''}${formatCurrency(p.ValorParcela)}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-            }
-
-            // --- GERA O HTML PARA OS PLANOS DE LOCAÇÃO (COM AGRUPAMENTO DE PLANOS DE DADOS) ---
+            if (vendaPlans.length > 0) { /* ... lógica de planos de venda ... */ }
             let locacaoHTML = '';
+            if (locacaoPlans.length > 0) { /* ... lógica de planos de locação ... */ }
+            
+            // Re-gerando a lógica dos planos aqui para ficar completo
+            if (vendaPlans.length > 0) {
+                vendaHTML = `<div class="plans-section"><h4>Planos de Venda</h4>${vendaPlans.map(p => `<div class="plan"><span class="plan-name">${p.NomePlano}</span><span class="plan-price">${p.NumeroParcelas > 1 ? `${p.NumeroParcelas}x de ` : ''}${formatCurrency(p.ValorParcela)}</span></div>`).join('')}</div>`;
+            }
             if (locacaoPlans.length > 0) {
-                // Agrupa os planos por duração (ex: "12 Meses", "24 Meses")
-                const groupedLocacao = locacaoPlans.reduce((acc, plan) => {
-                    acc[plan.NomePlano] = acc[plan.NomePlano] || [];
-                    acc[plan.NomePlano].push(plan);
-                    return acc;
-                }, {});
-
-                locacaoHTML = `
-                    <div class="plans-section">
-                        <h4>Planos de Locação</h4>
-                        ${Object.keys(groupedLocacao).map(groupName => `
-                            <div class="plan-group">
-                                <strong class="group-name">${groupName}</strong>
-                                ${groupedLocacao[groupName].sort((a, b) => (a.PlanoDados || '').localeCompare(b.PlanoDados || '')).map(p => `
-                                    <div class="plan">
-                                        <span class="plan-name data-plan">${p.PlanoDados || ''}</span>
-                                        <span class="plan-price">${formatCurrency(p.ValorParcela)} / mês</span>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
+                const groupedLocacao = locacaoPlans.reduce((acc, plan) => { (acc[plan.NomePlano] = acc[plan.NomePlano] || []).push(plan); return acc; }, {});
+                locacaoHTML = `<div class="plans-section"><h4>Planos de Locação</h4>${Object.keys(groupedLocacao).map(groupName => `<div class="plan-group"><strong class="group-name">${groupName}</strong>${groupedLocacao[groupName].sort((a, b) => (a.PlanoDados || '').localeCompare(b.PlanoDados || '')).map(p => `<div class="plan"><span class="plan-name data-plan">${p.PlanoDados || ''}</span><span class="plan-price">${formatCurrency(p.ValorParcela)} / mês</span></div>`).join('')}</div>`).join('')}</div>`;
             }
 
-            // Monta o HTML final do card, agora incluindo o ESTOQUE
+
             card.innerHTML = `
                 <div class="card-header">
                     <h3>${equip.NomeProduto}</h3>
                     <p>${equip.Fabricante} - Modelo: ${equip.Modelo}</p>
                     <p class="stock">Estoque: <strong>${equip.Estoque !== undefined && equip.Estoque !== '' ? equip.Estoque : 'N/D'}</strong></p>
+                    ${imageButtonHTML}
                 </div>
                 <div class="card-body">
                     ${vendaHTML}
@@ -110,37 +92,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    /**
-     * Busca os dados da API do Google Apps Script.
-     */
-    const fetchData = async () => {
+    const fetchData = async () => { /* ... sua função fetchData existente ... */ };
+    // Colando a função fetchData completa para garantir
+    const fetchDataAsync = async () => {
         try {
             const response = await fetch(API_URL);
-            if (!response.ok) {
-                throw new Error(`Falha na resposta da rede: ${response.statusText}`);
-            }
+            if (!response.ok) throw new Error(`Falha na resposta da rede: ${response.statusText}`);
             const data = await response.json();
-            allEquipments = data; // Guarda os dados originais
-            renderEquipments(allEquipments); // Renderiza todos os equipamentos na tela
+            allEquipments = data;
+            renderEquipments(allEquipments);
         } catch (error) {
             console.error('Erro ao buscar os dados:', error);
-            container.innerHTML = '<p class="error-message">Falha ao carregar os equipamentos. Verifique a URL da API no arquivo script.js e as permissões da planilha. Tente novamente mais tarde.</p>';
+            container.innerHTML = '<p class="error-message">Falha ao carregar os equipamentos. Verifique a URL da API e as permissões. Tente novamente mais tarde.</p>';
         }
     };
 
-    // Adiciona o evento de "escuta" ao campo de busca
+
+    // --- Delegação de Evento para os botões "Ver Imagem" ---
+    container.addEventListener('click', (event) => {
+        if (event.target.classList.contains('view-image-btn')) {
+            const imageUrl = event.target.dataset.imgSrc;
+            openModal(imageUrl);
+        }
+    });
+
     searchInput.addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
-        // Filtra a lista completa de equipamentos
         const filteredEquipments = allEquipments.filter(equip =>
             equip.NomeProduto.toLowerCase().includes(searchTerm) ||
             equip.Fabricante.toLowerCase().includes(searchTerm) ||
             equip.Modelo.toLowerCase().includes(searchTerm)
         );
-        // Renderiza apenas os equipamentos filtrados
         renderEquipments(filteredEquipments);
     });
 
-    // Inicia todo o processo buscando os dados da API
-    fetchData();
+    fetchDataAsync(); // Chamando a função para iniciar
 });
