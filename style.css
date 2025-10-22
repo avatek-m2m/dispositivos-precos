@@ -298,3 +298,15 @@ header h1 {
     width: auto;
     border-radius: 3px;
 }
+
+/* ==================================== */
+/* MELHORIA NA SEPARAÇÃO DOS PLANOS     */
+/* ==================================== */
+
+/* Este seletor mágico significa: "Aplique este estilo a qualquer 
+   .plans-section que venha IMEDIATAMENTE APÓS outro .plans-section" */
+.plans-section + .plans-section {
+    margin-top: 25px; /* Adiciona um espaço superior generoso */
+    padding-top: 20px; /* Adiciona um espaçamento interno acima do título */
+    border-top: 1px solid var(--border-color); /* Adiciona uma linha divisória sutil, que já combina com o tema escuro */
+}
