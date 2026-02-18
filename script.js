@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Mapa de Logos ---
     const supplierLogos = {
-        'TELTONIKA': 'https://logo.clearbit.com/teltonika-gps.com',
+        'TELTONIKA': 'https://img.logo.dev/:teltonika-gps.com?token=pk_FGnHpYa7RVyBaPNWay1WYg',
         'SUNTECH': 'https://logo.clearbit.com/suntechdobrasil.com.br',
         'RUPTELA': 'https://logo.clearbit.com/ruptela.com',
         'TOPFLY': 'https://logo.clearbit.com/topflytech.com',
