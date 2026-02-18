@@ -10,12 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Mapa de Logos ---
     const supplierLogos = {
         'TELTONIKA': 'https://img.logo.dev/teltonika-gps.com?token=pk_FGnHpYa7RVyBaPNWay1WYg',
-        'SUNTECH': 'https://logo.clearbit.com/suntechdobrasil.com.br',
-        'RUPTELA': 'https://logo.clearbit.com/ruptela.com',
-        'TOPFLY': 'https://logo.clearbit.com/topflytech.com',
-        'QUECLINK': 'https://logo.clearbit.com/queclink.com',
-        'CONCOX': 'https://logo.clearbit.com/iconcox.com',
-        'JIMI IoT': 'https://logo.clearbit.com/jimilab.com'
+        'SUNTECH': 'https://img.logo.dev/suntechdobrasil.com.br?token=pk_FGnHpYa7RVyBaPNWay1WYg',
+        'RUPTELA': 'https://img.logo.dev/ruptela.com?token=pk_FGnHpYa7RVyBaPNWay1WYg',
+        'TOPFLY': 'https://img.logo.dev/topflytech.com?token=pk_FGnHpYa7RVyBaPNWay1WYg',
+        'QUECLINK': 'https://img.logo.dev/queclink.com?token=pk_FGnHpYa7RVyBaPNWay1WYg',
+        'CONCOX': 'https://img.logo.dev/iconcox.com?token=pk_FGnHpYa7RVyBaPNWay1WYg',
+        'JIMI IoT': 'https://img.logo.dev/jimilab.com?token=pk_FGnHpYa7RVyBaPNWay1WYg',
+        'LUMINI': 'https://img.logo.dev/queclink.com?token=pk_FGnHpYa7RVyBaPNWay1WYg'
     };
 
     // --- Referências aos elementos da página ---
