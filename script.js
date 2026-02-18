@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'QUECLINK': 'https://img.logo.dev/queclink.com?token=pk_FGnHpYa7RVyBaPNWay1WYg',
         'CONCOX': 'https://img.logo.dev/iconcox.com?token=pk_FGnHpYa7RVyBaPNWay1WYg',
         'JIMI IoT': 'https://img.logo.dev/jimilab.com?token=pk_FGnHpYa7RVyBaPNWay1WYg',
-        'LUMINI': 'https://img.logo.dev/queclink.com?token=pk_FGnHpYa7RVyBaPNWay1WYg'
+        'LUMINI': 'https://img.logo.dev/luminitracker.com.br?token=pk_FGnHpYa7RVyBaPNWay1WYg'
     };
 
     // --- Referências aos elementos da página ---
