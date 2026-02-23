@@ -1,6 +1,7 @@
 /* Paleta de Cores do Tema Escuro Moderno */
 :root {
-    --bg-color: #121212;          /* Fundo principal, quase preto */
+    /*--bg-color: #121212; /* Fundo principal, quase preto */
+    --bg-color: #E3E3E8; 
     --card-color: #1e1e1e;        /* Fundo dos cards, um pouco mais claro */
     --border-color: #333;       /* Cor da borda para dar separação */
     --primary-text-color: #e0e0e0;/* Cor do texto principal, branco suave */
