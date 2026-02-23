@@ -2,12 +2,15 @@
 :root {
     /*--bg-color: #121212; /* Fundo principal, quase preto */
     --bg-color: #E3E3E8; 
-    --card-color: #1e1e1e;        /* Fundo dos cards, um pouco mais claro */
+    /*--card-color: #1e1e1e;        /* Fundo dos cards, um pouco mais claro */
+    --card-color: #E3E3E8;        /* Fundo dos cards, um pouco mais claro */
     --border-color: #333;       /* Cor da borda para dar separação */
     --primary-text-color: #e0e0e0;/* Cor do texto principal, branco suave */
     --secondary-text-color: #888;/* Cor do texto secundário, cinza */
     --accent-color: #8c9eff;      /* Azul vibrante para títulos e preços */
-    --header-color: #1e1e1e;      /* Cor do cabeçalho */
+    /*--header-color: #1e1e1e;      /* Cor do cabeçalho */
+    --header-color: #E3E3E8;      /* Cor do cabeçalho */
+    
 }
 
 body {
